@@ -76,7 +76,8 @@ public class Mai2018 {
 		}
 		try {
 			PrintWriter skriv = new PrintWriter("res" + filen);
-			kart.forEach((key,value) -> skriv.println(key + ": " + value));
+			
+			kart.forEach((key,value) -> skriv.println(key + ": " + value)); //i<3lambda
 			skriv.close();
 		} catch (Exception e) {
 			//
