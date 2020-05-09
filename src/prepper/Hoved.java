@@ -1,5 +1,7 @@
 package prepper;
 
+import java.util.Arrays;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,7 +20,7 @@ public class Hoved extends Application{
 		launch(args);
 
 	}
-	
+	Katalog katalog = new Katalog();
 	Button sortTlf = new Button("Sorter Tlf");
 	Button sortNavn = new Button("Sorter Navn");
 	Button nyKont = new Button("Ny Kontakt");
@@ -46,6 +48,7 @@ public class Hoved extends Application{
 		 * 2: [ny kontakt][slett kontakt]
 		 * 3: Status linje. (input som er låst mot redigering)
 		 */
+	
 		status.setDisable(true);
 		BorderPane root = new BorderPane();
 		HBox toppen = new HBox();
@@ -60,11 +63,46 @@ public class Hoved extends Application{
 		bunnen.getChildren().addAll(del1, del2, status);
 		root.setTop(toppen);
 		root.setCenter(holder);
+		holder.setText(katalog.toString());
 		root.setBottom(bunnen);
 		window.setScene(new Scene(root, 400, 500));
 		window.setTitle("Kontakter");
 		window.show();
 		
+		nyKont.setOnAction(event -> {
+			status.setText("Ny Kontakt Laget");
+			int nr = Integer.parseInt(innTlf.getText());
+			String navn = innNavn.getText();
+			katalog.add(nr, navn);
+			holder.clear();
+			innTlf.clear();
+			innNavn.clear();
+			holder.setText(katalog.toString());
+		});
+		
+		sortNavn.setOnAction(event -> {
+			status.setText("Sortert på navn");
+			holder.clear();
+			katalog.sortNames();
+			holder.setText(katalog.toString());
+		});
+		
+		slettKont.setOnAction(event -> {
+			String tempName = innNavn.getText();
+			status.setText("Removed: " + tempName);
+			holder.clear();
+			innTlf.clear();
+			innNavn.clear();
+			katalog.remove(tempName);
+			holder.setText(katalog.toString());
+		});
+		
+		sortTlf.setOnAction(event -> {
+			status.setText("Sortert på nummer");
+			katalog.sorterNummer();
+			holder.clear();
+			holder.setText(katalog.toString());
+		});
 		
 	}
 
