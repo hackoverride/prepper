@@ -25,14 +25,8 @@ public class Utstyr implements Comparable<Utstyr>{
 		return 	"Leverandør: " + this.leverandor +" | "+
 				"Navn: " + this.navn + " | " +
 				"Farge: " + this.farge + " | " +
-				"Plassering: " + this.plassering + "\n";
+				"Plassering: " + this.plassering + " Slettenr: " + this.id + "\n";
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	@Override

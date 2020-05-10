@@ -86,5 +86,16 @@ public class Database {
 		return newer;
 	}
 	
+	public void fjern(String id) {
+		try {
+			this.con = DriverManager.getConnection(db);
+			this.statement = con.createStatement();
+			statement.executeUpdate(id);
+			con.close();
+		} catch (SQLException e) {
+			System.err.print(e);
+		}		
+	}
+	
 
 }

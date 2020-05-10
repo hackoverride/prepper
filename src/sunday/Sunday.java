@@ -7,6 +7,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -37,25 +40,28 @@ public class Sunday extends Application{
 	TextField innFarge = new TextField();
 	TextField innPlassering = new TextField();
 	Button registrer = new Button("Registrer");
-	Button oppdater = new Button("Oppdater");
 	Button sorter = new Button("Sorter");
-	Button seListe = new Button("Se utstyr");
-	Button seRegistrer = new Button("Registrer");
-	Button tilbake = new Button("Meny");
+	MenuBar menylinje = new MenuBar();
+	Menu filmeny = new Menu("Valg");
+	MenuItem menuReg = new MenuItem("Registrer");
+	MenuItem menuList = new MenuItem("Oversikt");
+	MenuItem menuBruk = new MenuItem("Fjerne Utstyr");
 	TextField status = new TextField();
 	Utstyr[] beholdning;
 	
 	
 	public void start(Stage vinduet) {
+		
+		filmeny.getItems().addAll(menuReg, menuList, menuBruk);
+		menylinje.getMenus().addAll(filmeny);
+		
 		BorderPane regRoot = new BorderPane();
 		BorderPane listRoot = new BorderPane();
-		VBox menyHolder = new VBox(30);
-		
-		menyHolder.getChildren().addAll(seListe, seRegistrer);
+
 		
 		
 		HBox knappholder = new HBox(20);
-		knappholder.getChildren().addAll(oppdater, sorter, tilbake);
+		knappholder.getChildren().addAll(sorter);
 		listRoot.setCenter(listen);
 		listRoot.setBottom(knappholder);
 		
@@ -90,11 +96,17 @@ public class Sunday extends Application{
 		
 		
 		Scene li = new Scene(listRoot, 600, 500); // <-- liste over hva man har.
-		Scene menu = new Scene(menyHolder, 300, 200); //< --meny systemet 
-		Scene re = new Scene(regRoot, 300, 200); //<-- registrer nytt utstyr
+		Scene re = new Scene(regRoot, 600, 500); //<-- registrer nytt utstyr
 		
-		vinduet.setScene(menu);
-		vinduet.setTitle("Meny");
+		BorderPane preStart = new BorderPane();
+		preStart.setTop(menylinje);
+		
+		
+		preStart.setStyle("-fx-background-color: #000");
+		Scene start = new Scene(preStart, 600, 500);
+		
+		vinduet.setScene(start);
+		vinduet.setTitle("Ylvas strikke oversikt");
 		vinduet.show();
 		
 		registrer.setOnAction(event -> {
@@ -118,17 +130,7 @@ public class Sunday extends Application{
 			innFarge.clear();
 			innPlassering.clear();
 		});
-		
-		oppdater.setOnAction(event -> {
-			listen.clear();
-			beholdning = new Utstyr[0];
-			beholdning = db.hentLageret();
-			String tempString = "";
-			for (Utstyr u : beholdning) {
-				tempString += u.toString();
-			}
-			listen.setText(tempString);
-		});
+
 		
 		sorter.setOnAction(event -> {
 			System.out.print("!");
@@ -143,19 +145,49 @@ public class Sunday extends Application{
 			listen.setText(tempString);
 		});
 		
-		seListe.setOnAction(event -> {
+		menuList.setOnAction(event -> {
+			listRoot.setTop(menylinje);
 			vinduet.setScene(li);
 			vinduet.setTitle("Oversikt");
+			
+			listen.clear();
+			beholdning = new Utstyr[0];
+			beholdning = db.hentLageret();
+			String tempString = "";
+			for (Utstyr u : beholdning) {
+				tempString += u.toString();
+			}
+			listen.setText(tempString);
+			
 		});
 		
-		seRegistrer.setOnAction(event -> {
+		menuReg.setOnAction(event -> {
+			regRoot.setTop(menylinje);
 			vinduet.setScene(re);
 			vinduet.setTitle("Registrer");
 		});
 		
-		tilbake.setOnAction(event -> {
-			vinduet.setScene(menu);
-			vinduet.setTitle("Meny");
+		menuBruk.setOnAction(event -> {
+			Stage registrerBrukt = new Stage();
+			HBox holder = new HBox(20);
+			holder.setAlignment(Pos.CENTER);
+			Label lnr = new Label("id: ");
+			TextField nr = new TextField();
+			Button remove = new Button("fjern");
+			holder.getChildren().addAll(lnr, nr, remove);
+			
+			Scene temp = new Scene(holder, 300, 100);
+			registrerBrukt.setScene(temp);
+			registrerBrukt.setTitle("fjern utstyr: ");
+			registrerBrukt.show();
+			
+			remove.setOnAction(ndevent -> {
+				
+				String tempid = nr.getText();
+				String tempSQL = "DELETE FROM utstyr WHERE id = " + tempid + ";";
+				db.fjern(tempSQL);
+				registrerBrukt.close();
+			});
 		});
 		
 	}
