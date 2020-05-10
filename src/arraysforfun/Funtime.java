@@ -1,5 +1,6 @@
 package arraysforfun;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Funtime {
@@ -23,9 +24,42 @@ public class Funtime {
 			System.out.print(i + " ");
 		}
 		
+		int[] nummer = {123, 456, 789};
+		String[] navn = {"Bjarne", "Thorleif", "Gudrun"};
+		
+		HashMap<Integer, String> kat = changeToHash(nummer, navn);
+		
+		kat.forEach((key, value) -> {
+			System.out.println(key + ": " + value);
+		});
+		
+		final int HEIGHT = 10;
+		final int WIDTH = (int)(HEIGHT*1.618);
+		
+		for (int i = 0; i < WIDTH; i++) {
+			
+			for (int j = 0; j < HEIGHT; j++) {
+				if (i == 0 || i == WIDTH -1) {
+					System.out.print("-");
+				} else {
+				
+				if(j == 0 || j == HEIGHT-1) {
+					System.out.print("|");
+				} else {
+					System.out.print("O");
+				}
+				}
+				
+			}
+			System.out.println("");
+		}
+		
+		
+		
+		
+		
 		
 	}
-	
 	
 	private static int[] sorting(int[] tab) {
 		int moves = 1;
@@ -41,8 +75,8 @@ public class Funtime {
 			}
 		}
 		return tab;
-		
 	}
+	
 	private static int[] sortingDesc(int[] tab) {
 		int moves = 1;
 		while (moves != 0) {
@@ -58,5 +92,15 @@ public class Funtime {
 		}
 		return tab;
 	}
+	
+	private static HashMap<Integer, String> changeToHash(int[] nr, String[] nvn) {
+		HashMap<Integer, String> katalog = new HashMap<Integer, String>();
+		for (int i = 0; i < nr.length ; i++) {
+			katalog.put(nr[i], nvn[i]);
+		}
+		return katalog;
+	}
+	
+	
 	
 }
