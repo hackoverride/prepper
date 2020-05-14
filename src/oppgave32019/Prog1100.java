@@ -26,8 +26,6 @@ public class Prog1100 extends Application{
 		 */
 		FlowPane root = new FlowPane();
 		Label tittel = new Label("Oppgi målene på oljetanken i fletene under!");
-		
-
 		Label labelL = new Label("Tanklengde L i cm:");
 		TextField innL = new TextField();
 		Label labelH = new Label("Tankhøyde H i cm:");
@@ -39,34 +37,23 @@ public class Prog1100 extends Application{
 		restLiter.setDisable(true);
 		root.getChildren().addAll(tittel, labelL, innL, labelH, innH, labelD, innD, labelRest, restLiter);
 		root.setAlignment(Pos.CENTER);
-		
 		Button beregn = new Button("Beregn restvolum");
 		Button blank = new Button("Blank Ut");
-		
 		root.getChildren().addAll(beregn, blank);
-		
 		vinduet.setScene(new Scene(root, 300, 200));
 		vinduet.setTitle("OljeKalkulator'n");
 		vinduet.show();
 		
 		beregn.setOnAction(event -> {
-			
 			double lengde = Double.parseDouble(innL.getText());
 			double hoyde = Double.parseDouble(innH.getText());
 			double dybde = Double.parseDouble(innD.getText());
 			double radius = (hoyde/2);
-			
 			double del1 = Math.acos((radius - dybde)/radius);
 			double del2 = Math.sqrt(dybde*(2*radius -dybde));
-			
 			double beregning = lengde*(Math.pow(radius, 2)*del1 - (radius - dybde) * del2 );
-			
 			restLiter.setText("" + (int)(beregning/1000));
-			
-			
-			
 		});
-		
 		
 		blank.setOnAction(event -> {
 			innL.clear();
@@ -74,8 +61,6 @@ public class Prog1100 extends Application{
 			innD.clear();
 			restLiter.clear();
 		});
-		
-		
 		
 	}
 	

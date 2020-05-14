@@ -2,9 +2,7 @@ package oppgave32019;
 
 import java.io.File;
 import java.util.Scanner;
-
 import javax.swing.JOptionPane;
-
 public class Filoppgave {
 
 	public static void main(String[] args) {
